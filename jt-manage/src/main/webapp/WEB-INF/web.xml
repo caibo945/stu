@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="jt-manage" version="2.5">
+	<display-name>jt-manage</display-name>
+
+	<!-- 配置前段控制器 -->
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:/spring/application*.xml</param-value>
+		</init-param>
+		<!-- 表示容器启动第一个加载该Servlet -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- 全路径 /service/*.do
+			请求必须以/service开头并且以.do结尾
+		后缀型路径：*.do 要求以.do结尾的请求
+		前缀型路径： 
+		/service/* 拦截已service开头的请求
+		/ 拦截任意的请求包含静态资源   放行.jsp等动态资源请求  为了实现restFul风格
+		 /*   拦截所有的资源 html js  
+		 前段控制器最多写 /  禁止写/* 避免拦截不必要拦截的资源-->
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!-- 配置POST请求过滤器 -->
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern> <!-- 过滤器什么都要拦，所以要用/* -->
+	</filter-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
